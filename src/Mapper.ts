@@ -82,7 +82,7 @@ class Mapper {
     Mapper.configuration = configuration;
   }
 
-  static map<TDestination>(source: any, destination: any) {
+  static map<TDestination>(source: any, destination: any): TDestination {
     const profile = Mapper.configuration.profiles.find(profile => {
       return profile.destinationType === destination && source instanceof profile.sourceType;
     });
