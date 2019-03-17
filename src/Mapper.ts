@@ -1,35 +1,31 @@
 class Options<TSource> {
-  constructor(private source: TSource) {
+  constructor(private source: TSource) {}
 
-  }
-
-  public mapFrom = (member: (source: TSource) => any) => {
+  public mapFrom(member: (source: TSource) => any) {
     return member(this.source);
-  }
+  };
 }
 
-type NonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends (...args: any[]) => any ? never : K }[keyof T] & string;
+type NonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends (...args: any[]) => any ? never : K }[keyof T] &
+  string;
 
 class Map<TSource, TDestination> {
-  constructor(private destinationType: any) {
-
-  }
+  constructor(private destinationType: any) {}
 
   private members: [string, (options: Options<TSource>) => any][] = [];
 
   public for(member: NonFunctionPropertyNames<Required<TDestination>>, options: (options: Options<TSource>) => any) {
-      this.members.push([member, options]);
+    this.members.push([member, options]);
 
-      return this;
-  };
+    return this;
+  }
 
   public map(source: TSource) {
     const opts = new Options(source);
 
     const destination = new this.destinationType();
 
-    for (let [member, option] of this.members)
-    {
+    for (let [member, option] of this.members) {
       destination[member] = option(opts);
     }
 
@@ -40,12 +36,12 @@ class Map<TSource, TDestination> {
 export interface IProfile {
   sourceType: any;
   destinationType: any;
-    createMap(destinationType: any):any;
-    map(source: any):any;
+  createMap(destinationType: any): any;
+  map(source: any): any;
 }
 
 export class Profile<TSource, TDestination> implements IProfile {
-  _map! : Map<TSource, TDestination>;
+  _map!: Map<TSource, TDestination>;
   destinationType!: any;
   sourceType!: any;
 
@@ -55,12 +51,12 @@ export class Profile<TSource, TDestination> implements IProfile {
   }
 
   map(source: TSource) {
-      return this._map.map(source);
+    return this._map.map(source);
   }
 }
 
 class MapperConfiguration {
-  profiles : IProfile[] = [];
+  profiles: IProfile[] = [];
 
   createMap<TSource, TDestination>(destinationType: any) {
     return new Map<TSource, TDestination>(destinationType);
@@ -72,28 +68,30 @@ class MapperConfiguration {
 }
 
 class Mapper {
-  static configuration : MapperConfiguration;
+  static configuration: MapperConfiguration;
 
   static createMap<TSource, TDestination>(destinationType: any) {
     return new Map<TSource, TDestination>(destinationType);
   }
 
   static initialize(config: (mapper: MapperConfiguration) => void) {
-    Mapper.configuration  = new MapperConfiguration();
+    const configuration = new MapperConfiguration();
 
-    config(Mapper.configuration);
+    config(configuration);
+
+    Mapper.configuration = configuration;
   }
 
   static map<TDestination>(source: any, destination: any) {
-      const profile = Mapper.configuration.profiles.find(profile => {
-        return profile.destinationType === destination && source instanceof profile.sourceType;
-      });
+    const profile = Mapper.configuration.profiles.find(profile => {
+      return profile.destinationType === destination && source instanceof profile.sourceType;
+    });
 
-      if(!profile) {
-        throw new Error(`There is no profile for the type ${typeof source}`);
-      }
+    if (!profile) {
+      throw new Error(`There is no profile for the type ${typeof source}`);
+    }
 
-      return profile.map(source);
+    return profile.map(source);
   }
 }
 

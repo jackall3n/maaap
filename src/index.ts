@@ -1,6 +1,4 @@
 import { Mapper, Profile } from './Mapper';
 
-export {
-  Profile
-}
+export { Profile };
 export default Mapper;
