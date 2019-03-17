@@ -1,5 +1,3 @@
-import { Destination } from '../examples/mapper-profile/destination';
-
 class Options<TSource> {
   constructor(private source: TSource) {
 

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "clean" : "rm -rf dist",
+    "build" : "npm run clean && tsc"
   },
   "files": [
     "dist/**/*"
