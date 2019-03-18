@@ -1,17 +1,44 @@
+interface IOptions<TSource> {
+    get(): any;
+}
+
 class Options<TSource> {
-  constructor(private source: TSource) {}
+  constructor(public source: TSource) {}
 
   public mapFrom(member: (source: TSource) => any): Options<TSource> {
-    return this;
-    // return member(this.source);
+    return new MapFromOptions(member,this.source);
   };
 
   public if(member: (source: TSource) => boolean): Options<TSource> {
-    return this;
-    // return member(this.source);
+    return new IfOptions<TSource>(member, this.source);
   }
 
-  public else = this.mapFrom;
+  public else(member: (source: TSource) => any): Options<TSource> {
+    return new ElseOptions(member,this.source);
+  };
+}
+
+class MapFromOptions<TSource> extends Options<TSource> implements IOptions<TSource> {
+  constructor(private member: (source: TSource) => any, source: TSource) {
+    super(source);
+  }
+
+  get(): any {
+    return this.member(this.source);
+  }
+}
+
+class ElseOptions<TSource> extends MapFromOptions<TSource> {
+
+}
+class IfOptions<TSource> extends Options<TSource> implements IOptions<TSource> {
+  constructor(private member: (source: TSource) => boolean, source: TSource) {
+      super(source);
+  }
+
+  get(): boolean {
+    return this.member(this.source);
+  }
 }
 
 type NonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends (...args: any[]) => any ? never : K }[keyof T] &
