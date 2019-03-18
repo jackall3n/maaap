@@ -58,7 +58,7 @@ class Map<TSource, TDestination> {
   public map(source: TSource) {
     const opts = new Options(source);
 
-    const destination:any= {};
+    const destination:any = {};
 
     for (let [member, option] of this.members) {
       destination[member] = option(opts);
