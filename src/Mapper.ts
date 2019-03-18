@@ -4,6 +4,12 @@ class Options<TSource> {
   public mapFrom(member: (source: TSource) => any) {
     return member(this.source);
   };
+
+  public if(member: (source: TSource) => boolean): boolean {
+    return member(this.source);
+  }
+
+  public else = this.mapFrom;
 }
 
 type NonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends (...args: any[]) => any ? never : K }[keyof T] &
