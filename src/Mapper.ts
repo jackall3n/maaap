@@ -1,12 +1,14 @@
 class Options<TSource> {
   constructor(private source: TSource) {}
 
-  public mapFrom(member: (source: TSource) => any) {
-    return member(this.source);
+  public mapFrom(member: (source: TSource) => any): Options<TSource> {
+    return this;
+    // return member(this.source);
   };
 
-  public if(member: (source: TSource) => boolean): boolean {
-    return member(this.source);
+  public if(member: (source: TSource) => boolean): Options<TSource> {
+    return this;
+    // return member(this.source);
   }
 
   public else = this.mapFrom;
