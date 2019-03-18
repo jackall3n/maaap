@@ -1,6 +1,6 @@
 {
   "name": "maaap",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "typescript": "^3.3.3333"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/jackall3n/maaap.git"
+    "type": "git",
+    "url": "https://github.com/jackall3n/maaap.git"
   }
 }
